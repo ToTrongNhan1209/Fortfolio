@@ -24,7 +24,6 @@ interface ClickRipple {
 }
 
 export function Opening() {
-  const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const [isLeaving, setIsLeaving] = useState(false);
   const [count, setCount] = useState(0);
@@ -54,7 +53,9 @@ export function Opening() {
     setCount(0);
     setProgress(0);
     setIsStamped(false);
-    document.documentElement.classList.add("overflow-hidden");
+    if (typeof document !== "undefined") {
+      document.documentElement.classList.add("overflow-hidden");
+    }
 
     let currentProgress = 0;
     const startTime = performance.now();
@@ -92,7 +93,9 @@ export function Opening() {
 
   // Trigger on every refresh / F5 / page load
   useEffect(() => {
-    setMounted(true);
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
     startOpening();
 
     // Replay opening listener from /studio or any trigger
@@ -117,7 +120,7 @@ export function Opening() {
 
   // Mouse move listener for smooth 3D parallax tilt & canvas interaction
   useEffect(() => {
-    if (!mounted || !isOpen) return;
+    if (!isOpen) return;
 
     const onPointerMove = (e: PointerEvent) => {
       const halfW = window.innerWidth / 2;
@@ -149,7 +152,7 @@ export function Opening() {
       window.removeEventListener("pointermove", onPointerMove);
       cancelAnimationFrame(frameId);
     };
-  }, [mounted, isOpen]);
+  }, [isOpen]);
 
   const [clickPulse, setClickPulse] = useState(false);
 
@@ -167,7 +170,7 @@ export function Opening() {
 
   // Ambient Dust & Golden Ink Particles Canvas
   useEffect(() => {
-    if (!mounted || !isOpen) return;
+    if (!isOpen) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -232,9 +235,9 @@ export function Opening() {
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(animId);
     };
-  }, [mounted, isOpen]);
+  }, [isOpen]);
 
-  if (!mounted || !isOpen) return null;
+  if (!isOpen) return null;
 
   // =========================================================================
   // 3-PHASE 6-SIDED HEXAGONAL ORIGAMI BOX & SURPRISE POP-UP (SCALED UP)
