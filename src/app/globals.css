@@ -1,0 +1,949 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #fafaf8;
+  --canvas-sunk: #f2f0ec;
+  --ink: #111111;
+  --ink-soft: #33332f;
+  --muted: #6b675f;
+  --divider: #eae7e1;
+  --accent: #b42318;
+  --inverse-bg: #111111;
+  --inverse-text: #f5f3ee;
+  
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-playful: cubic-bezier(0.34, 1.9, 0.5, 1);
+  --dur-hover: 0.2s;
+  --dur-pop: 0.28s;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-canvas-sunk: var(--canvas-sunk);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-divider: var(--divider);
+  --color-accent: var(--accent);
+}
+
+html {
+  background-color: var(--canvas);
+  color: var(--ink);
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+
+@media (pointer: fine) {
+  body, a, button, [role="button"], input, textarea, select {
+    cursor: none !important;
+  }
+}
+
+/* Paper Field Lattice Subtle Texture Background (45deg diamond grid) */
+.paper-field-bg {
+  background-color: var(--canvas);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cpath d='M36 0 72 36 36 72 0 36Z' fill='none' stroke='%23111111' stroke-opacity='0.05'/%3E%3C/svg%3E");
+  background-position: top center;
+  background-repeat: repeat;
+}
+
+/* Fraunces Editorial Headline Font */
+.font-name {
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+
+.font-name-italic {
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif;
+  font-style: italic;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+
+/* Selection Highlight */
+::selection {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* 3D Flip Card Scene */
+.hero-flip-scene {
+  perspective: 1400px;
+}
+.hero-flip-card {
+  transform-style: preserve-3d;
+  transition: transform 0.78s var(--ease-editorial);
+}
+.hero-flip-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* Interactive Skills Chip with Tilt & Hover Lift */
+.skills-chip {
+  --lift: 0px;
+  font-family: var(--font-geist-mono), monospace;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--divider);
+  background: var(--canvas);
+  color: var(--ink-soft);
+  rotate: var(--tilt, 0deg);
+  translate: 0 var(--lift);
+  cursor: default;
+  transition: translate var(--dur-pop) var(--ease-playful),
+              rotate var(--dur-pop) var(--ease-playful),
+              border-color var(--dur-hover) var(--ease-editorial),
+              color var(--dur-hover) var(--ease-editorial),
+              box-shadow var(--dur-hover) var(--ease-editorial);
+  border-radius: 9999px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+}
+
+.skills-chip:hover {
+  --lift: -3px;
+  border-color: var(--ink);
+  color: var(--ink);
+  rotate: 0deg !important;
+  box-shadow: 0 8px 16px -10px rgba(17, 17, 17, 0.35);
+}
+
+/* Text Scramble character transitions */
+.scramble-ch {
+  display: inline-block;
+  transition: color 0.15s ease, transform 0.2s var(--ease-playful);
+}
+.scramble-ch:hover {
+  color: var(--accent);
+}
+
+/* Fine Hairline dividers */
+.hairline-b {
+  border-bottom: 1px solid var(--divider);
+}
+.hairline-t {
+  border-top: 1px solid var(--divider);
+}
+
+/* Sticker Chips */
+.sticker-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.sticker-chip:hover {
+  transform: scale(1.08) rotate(2deg);
+}
+
+/* Print Styles for CV */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* =========================================================================
+   OPENING INTRO SCREEN: ARCHITECTURAL BLUEPRINT & 3D ISOMETRIC ORIGAMI STUDIO
+   ========================================================================= */
+
+.opening {
+  z-index: 100;
+  contain: strict;
+  position: fixed;
+  inset: 0;
+  background: var(--canvas);
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Split paper curtains for seamless exit reveal */
+.opening__curtain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--canvas);
+  background-color: #fafaf8;
+  transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+  z-index: 1;
+}
+
+.opening__curtain--top {
+  top: 0;
+  height: 50%;
+  border-bottom: 1px solid var(--divider);
+  box-shadow: 0 12px 32px rgba(17, 17, 17, 0.08);
+}
+
+.opening__curtain--bottom {
+  bottom: 0;
+  height: 50%;
+  border-top: 1px solid var(--divider);
+  box-shadow: 0 -12px 32px rgba(17, 17, 17, 0.08);
+}
+
+.opening.is-leaving .opening__curtain--top {
+  transform: translateY(-101%);
+}
+
+.opening.is-leaving .opening__curtain--bottom {
+  transform: translateY(101%);
+}
+
+.opening.is-leaving .opening__content {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.5s ease-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Drafting background paper grid */
+.opening__blueprint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(circle at center, transparent 30%, rgba(250, 250, 248, 0.95) 85%),
+    linear-gradient(to right, rgba(17, 17, 17, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+  background-position: center;
+}
+
+/* =========================================================================
+   3D ARTISANAL HEXAGONAL ORIGAMI BOX (Hộp Lục Giác 6 Cạnh Tô Trọng Nhân)
+   ========================================================================= */
+
+/* 3D Perspective Scene for Mystery Box */
+.opening__scene {
+  perspective: 1200px;
+  perspective-origin: 50% 46%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Main 3D Box Rig */
+.opening__box-rig {
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  left: 50%;
+  top: 50%;
+  margin-left: -105px;
+  margin-top: -105px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Hexagonal Base / Floor plate of the box */
+.opening__hex-base {
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  left: 50%;
+  top: 50%;
+  margin-left: -105px;
+  margin-top: -105px;
+  transform: translateY(72px) rotateX(90deg);
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 24px 45px rgba(17, 17, 17, 0.28));
+}
+
+/* 6 Folding Walls of the Hexagonal Box */
+.opening__hex-wall {
+  position: absolute;
+  width: 100px;
+  height: 144px;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -72px;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Dual-sided Wall Faces */
+.opening__wall-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  backface-visibility: hidden;
+}
+
+/* Outer Face (visible when box is closed or folding up) */
+.opening__wall-outer {
+  background: #fdfbf7;
+  border: 1.5px solid #111111;
+  box-shadow: 
+    inset 0 0 0 1px #e6af2e,
+    0 6px 16px rgba(17, 17, 17, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inner Face (visible when box blossoms open outward) */
+.opening__wall-inner {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #18181b 0%, #0d0d0f 100%);
+  border: 1.5px solid #e6af2e;
+  box-shadow: inset 0 0 16px rgba(230, 175, 46, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Two-tone Origami Crease Facets */
+.opening__wall-facet-left {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ffffff 0%, #faf8f2 100%);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.opening__wall-facet-right {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #f5efe3 0%, #eae2d1 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+/* Crimson & Gold Ribbons on Box Walls */
+.opening__ribbon-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  left: 50%;
+  margin-left: -8px;
+  background: linear-gradient(180deg, #b42318 0%, #cf2d1f 50%, #9e1d13 100%);
+  border-left: 1px solid #e6af2e;
+  border-right: 1px solid #e6af2e;
+  box-shadow: 0 0 6px rgba(180, 35, 24, 0.3);
+  z-index: 2;
+}
+
+/* Brass Corner Reinforcements with Rivets */
+.opening__corner-bracket {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1.8px solid #e6af2e;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.opening__corner-bracket::after {
+  content: '';
+  position: absolute;
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  background: #111111;
+  top: 1.5px;
+  left: 1.5px;
+}
+
+/* Mechanical Brass Latch & Escutcheon on Front Wall */
+.opening__brass-latch {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #f5d47a 0%, #d4af37 50%, #aa820a 100%);
+  border: 1.5px solid #111111;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+}
+
+.opening__latch-hole {
+  width: 5px;
+  height: 8px;
+  background: #111111;
+  border-radius: 3px 3px 1px 1px;
+}
+
+.opening__latch-serial {
+  position: absolute;
+  bottom: -16px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 6.5px;
+  letter-spacing: 0.08em;
+  color: #111111;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Technical Inscription Stamps on Side Walls */
+.opening__tech-stamp {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 6.5px;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  color: rgba(17, 17, 17, 0.7);
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 4;
+}
+
+/* Hexagonal Top Lid of the Box */
+.opening__hex-lid {
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  left: 50%;
+  top: 50%;
+  margin-left: -105px;
+  margin-top: -105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 16px 32px rgba(17, 17, 17, 0.22));
+}
+
+/* Box Anticipation Rumble / Vibration */
+@keyframes box-anticipation-shake {
+  0%, 100% { transform: rotateX(var(--bx, 26deg)) rotateY(var(--by, 0deg)); }
+  25% { transform: rotateX(calc(var(--bx, 26deg) + 2.5deg)) rotateY(calc(var(--by, 0deg) - 4deg)) rotateZ(-1.5deg); }
+  50% { transform: rotateX(calc(var(--bx, 26deg) - 2deg)) rotateY(calc(var(--by, 0deg) + 4deg)) rotateZ(1.5deg); }
+  75% { transform: rotateX(calc(var(--bx, 26deg) + 1.5deg)) rotateY(calc(var(--by, 0deg) - 2.5deg)) rotateZ(1deg); }
+}
+
+.opening__box-shake {
+  animation: box-anticipation-shake 0.18s ease-in-out infinite;
+}
+
+/* =========================================================================
+   SURPRISE POP-UP: ELEVATED CHIBI AVATAR, MINI AIRPLANE & CONFETTI
+   ========================================================================= */
+
+/* The Popping Avatar Container */
+.opening__surprise-avatar {
+  position: absolute;
+  width: 126px;
+  height: 126px;
+  left: 50%;
+  top: 50%;
+  margin-left: -63px;
+  margin-top: -63px;
+  z-index: 30;
+  pointer-events: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+}
+
+.opening__avatar-medallion {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #e6af2e;
+  background: #ffffff;
+  box-shadow: 
+    0 0 0 3.5px #b42318,
+    0 20px 45px rgba(17, 17, 17, 0.25);
+  overflow: hidden;
+}
+
+/* 4 Cardinal Gold Starlight Studs */
+.opening__stud {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #e6af2e;
+  border: 1px solid #111111;
+  transform: rotate(45deg);
+  z-index: 32;
+}
+.opening__stud--t { top: -4px; left: 59px; }
+.opening__stud--b { bottom: -4px; left: 59px; }
+.opening__stud--l { left: -4px; top: 59px; }
+.opening__stud--r { right: -4px; top: 59px; }
+
+/* Celestial Astrolabe Ring Orbiting the Avatar */
+.opening__celestial-halo {
+  position: absolute;
+  width: 172px;
+  height: 172px;
+  left: 50%;
+  top: 50%;
+  margin-left: -86px;
+  margin-top: -86px;
+  border-radius: 50%;
+  border: 1.5px dashed #e6af2e;
+  pointer-events: none;
+  animation: halo-rotate 20s linear infinite;
+  transform-style: preserve-3d;
+  z-index: 28;
+}
+
+@keyframes halo-rotate {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}
+
+/* Floating Architectural Name Plaque Under Avatar - Ultra Crisp, 100% Legible */
+.opening__surprise-badge {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: #ffffff;
+  border: 1.8px solid #111111;
+  border-radius: 999px;
+  padding: 8px 22px;
+  box-shadow: 
+    0 0 0 1.5px #e6af2e,
+    0 14px 32px rgba(17, 17, 17, 0.22),
+    0 3px 8px rgba(17, 17, 17, 0.08);
+  white-space: nowrap;
+  width: max-content;
+  pointer-events: none;
+  z-index: 50;
+  transform-style: preserve-3d;
+}
+
+.opening__badge-title {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #111111;
+  line-height: 1.2;
+}
+
+.opening__badge-sub {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #b42318;
+  line-height: 1.2;
+}
+
+/* Shimmer beam across avatar */
+.opening__light-shimmer {
+  position: absolute;
+  inset: -100%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 65%
+  );
+  animation: shimmer-sweep 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%) translateY(-100%); }
+  45%, 100% { transform: translateX(100%) translateY(100%); }
+}
+
+/* The Soaring Authentic Origami Paper Plane */
+.opening__surprise-plane {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -20px;
+  margin-top: -20px;
+  width: 40px;
+  height: 40px;
+  z-index: 38;
+  filter: drop-shadow(0 6px 12px rgba(17, 17, 17, 0.25));
+  pointer-events: auto;
+  cursor: pointer;
+  transform-style: preserve-3d;
+}
+
+/* Confetti Vector Stars */
+.opening__confetti-star {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -5px;
+  margin-top: -5px;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 32;
+}
+
+/* Traditional Cinnabar Ink Stamp */
+.opening__seal {
+  width: clamp(96px, 15vw, 120px);
+  height: clamp(96px, 15vw, 120px);
+  border-radius: 50%;
+  border: 2.5px solid var(--accent);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 0 0 3px rgba(180, 35, 24, 0.15),
+    0 8px 20px rgba(180, 35, 24, 0.14),
+    inset 0 0 16px rgba(180, 35, 24, 0.08);
+  position: relative;
+  transition: transform 0.28s var(--ease-playful);
+  backface-visibility: hidden;
+}
+
+.opening__seal-ring {
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed rgba(180, 35, 24, 0.45);
+  border-radius: 50%;
+}
+
+/* Expanding shockwave ring on seal stamp */
+.opening__shockwave {
+  position: absolute;
+  inset: -24px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: seal-pulse 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes seal-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
+}
+
+/* Astrolabe rotating drafting rings */
+.opening__astrolabe {
+  position: absolute;
+  width: clamp(380px, 58vmin, 560px);
+  height: clamp(380px, 58vmin, 560px);
+  pointer-events: none;
+}
+
+.opening__ring-spin {
+  animation: astrolabe-spin 42s linear infinite;
+  transform-origin: center;
+}
+
+.opening__ring-spin-reverse {
+  animation: astrolabe-spin 28s linear infinite reverse;
+  transform-origin: center;
+}
+
+@keyframes astrolabe-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* UI Corner Frame Elements */
+.opening__corner {
+  color: var(--muted);
+  flex-direction: column;
+  animation: 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.15s both opening-corner;
+  display: flex;
+  position: absolute;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.opening__corner--tl {
+  top: clamp(1.2rem, 3vw, 2.4rem);
+  left: clamp(1.2rem, 4vw, 3.2rem);
+  gap: 0.35rem;
+}
+
+.opening__corner--tr {
+  top: clamp(1.2rem, 3vw, 2.4rem);
+  right: clamp(1.2rem, 4vw, 3.2rem);
+  align-items: flex-end;
+  gap: 0.65rem;
+}
+
+.opening__corner--bl {
+  bottom: clamp(1.2rem, 3vw, 2.4rem);
+  left: clamp(1.2rem, 4vw, 3.2rem);
+  gap: 0.4rem;
+  max-width: min(90vw, 420px);
+}
+
+.opening__corner--br {
+  bottom: clamp(1.2rem, 3vw, 2.4rem);
+  right: clamp(1.2rem, 4vw, 3.2rem);
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+@keyframes opening-corner {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.opening__count {
+  font-family: var(--font-fraunces), serif;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(4.5rem, 12vw, 9.5rem);
+  font-weight: 500;
+  line-height: 0.8;
+}
+
+/* Architectural millimeter scale ruler */
+.opening__ruler {
+  height: 12px;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(17, 17, 17, 0.35) 0,
+    rgba(17, 17, 17, 0.35) 1px,
+    transparent 1px,
+    transparent 6px
+  );
+  position: relative;
+}
+
+.opening__ruler-marker {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--accent);
+  transition: left 0.08s linear;
+}
+
+.opening__skip {
+  border: 1px solid var(--divider);
+  background: var(--canvas);
+  color: var(--ink);
+  transition: all var(--dur-hover) var(--ease-editorial);
+  border-radius: 9999px;
+  padding: 0.45rem 1.15rem;
+  font-size: 0.72rem;
+  font-family: var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.opening__skip:hover,
+.opening__skip:focus-visible {
+  border-color: var(--ink);
+  background: #111111;
+  color: #fafaf8;
+  transform: translateY(-1px);
+}
+
+/* =========================================================================
+   RICH KINETIC MOTION GRAPHICS (Satellites, Particles, Radar, Equalizer)
+   ========================================================================= */
+
+/* Floating Orbit Tracks */
+.opening__orbit-track {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(17, 17, 17, 0.12);
+  pointer-events: none;
+}
+
+/* Orbiting Interactive Satellites */
+.opening__satellite {
+  position: absolute;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.28s var(--ease-playful), filter 0.25s ease;
+  will-change: transform;
+}
+
+.opening__satellite:hover {
+  transform: scale(1.24) !important;
+  z-index: 60;
+  filter: drop-shadow(0 10px 20px rgba(180, 35, 24, 0.25));
+}
+
+.opening__satellite--1 {
+  animation: satellite-float-1 4.8s ease-in-out infinite;
+}
+
+.opening__satellite--2 {
+  animation: satellite-float-2 5.4s ease-in-out infinite;
+}
+
+.opening__satellite--3 {
+  animation: satellite-float-3 4.2s ease-in-out infinite;
+}
+
+.opening__satellite--4 {
+  animation: satellite-float-4 6s ease-in-out infinite;
+}
+
+@keyframes satellite-float-1 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(5deg); }
+}
+
+@keyframes satellite-float-2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(-6deg); }
+}
+
+@keyframes satellite-float-3 {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-10px) scale(1.08); }
+}
+
+@keyframes satellite-float-4 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-13px) rotate(7deg); }
+}
+
+/* Sound Equalizer Bars */
+.opening__eq-bar {
+  width: 2.5px;
+  background: var(--accent);
+  border-radius: 9999px;
+  animation: eq-bounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes eq-bounce {
+  0% { height: 4px; }
+  100% { height: 16px; }
+}
+
+/* Radar Sweep Beam */
+.opening__radar-sweep {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(180, 35, 24, 0.03) 60deg,
+    rgba(180, 35, 24, 0.16) 90deg,
+    transparent 90.5deg
+  );
+  animation: radar-sweep 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Interactive Click Ripple */
+.opening__click-ripple {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  margin-top: -12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  pointer-events: none;
+  animation: ripple-spread 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes ripple-spread {
+  0% { transform: scale(0.2); opacity: 0.95; }
+  100% { transform: scale(5.5); opacity: 0; }
+}
+
+/* Coffee Drip Animation */
+.opening__coffee-drop {
+  animation: drip-fall 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes drip-fall {
+  0% { transform: translateY(0); opacity: 1; }
+  65% { transform: translateY(18px); opacity: 1; }
+  100% { transform: translateY(22px) scale(1.8); opacity: 0; }
+}
+
+/* Coffee Steam Curl */
+.opening__steam {
+  animation: steam-sway 2.4s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes steam-sway {
+  0% { transform: translateY(0) scaleY(0.9) skewX(-3deg); opacity: 0.5; }
+  100% { transform: translateY(-4px) scaleY(1.1) skewX(3deg); opacity: 0.85; }
+}
+
+/* Continuous Subtle 3D Tumble for Origami Cube */
+@keyframes cube-tumble {
+  0% { transform: rotateX(var(--rx, -24deg)) rotateY(var(--ry, 45deg)) rotateZ(0deg); }
+  50% { transform: rotateX(calc(var(--rx, -24deg) + 6deg)) rotateY(calc(var(--ry, 45deg) + 12deg)) rotateZ(2deg); }
+  100% { transform: rotateX(var(--rx, -24deg)) rotateY(var(--ry, 45deg)) rotateZ(0deg); }
+}
+
+/* Gentle Floating Motion for Street Food Bleed Stickers */
+.animate-sticker-sway-1 {
+  animation: sticker-sway-1 6s ease-in-out infinite alternate;
+}
+
+.animate-sticker-sway-2 {
+  animation: sticker-sway-2 7.5s ease-in-out infinite alternate;
+}
+
+@keyframes sticker-sway-1 {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-7px); }
+}
+
+@keyframes sticker-sway-2 {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-9px); }
+}
+
+
