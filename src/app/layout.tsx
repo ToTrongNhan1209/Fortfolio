@@ -53,6 +53,26 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
     >
+      <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              #opening {
+                position: fixed !important;
+                inset: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                z-index: 99999 !important;
+                background-color: #fafaf8 !important;
+                overflow: hidden !important;
+              }
+              .opening__curtain {
+                background-color: #fafaf8 !important;
+              }
+            `,
+          }}
+        />
+      </head>
       <body className="bg-[#fafaf8] text-[#111111] min-h-screen">
         <CustomCursor />
         {children}

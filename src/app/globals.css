@@ -166,11 +166,12 @@ body {
    ========================================================================= */
 
 .opening {
-  z-index: 100;
+  z-index: 99999;
   contain: strict;
   position: fixed;
   inset: 0;
   background: var(--canvas);
+  background-color: #fafaf8;
   overflow: hidden;
   user-select: none;
 }

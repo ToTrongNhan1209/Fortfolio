@@ -327,7 +327,16 @@ export function Opening() {
     <div
       id="opening"
       onClick={handleScreenClick}
-      className={`opening fixed inset-0 z-[100] select-none ${
+      style={{
+        position: "fixed",
+        inset: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: 99999,
+        backgroundColor: "#fafaf8",
+        overflow: "hidden",
+      }}
+      className={`opening fixed inset-0 z-[99999] select-none ${
         isLeaving ? "is-leaving" : ""
       }`}
       aria-label="Portfolio opening sequence"
@@ -349,8 +358,16 @@ export function Opening() {
       />
 
       {/* Split paper curtains for seamless exit reveal */}
-      <div className="opening__curtain opening__curtain--top" aria-hidden="true" />
-      <div className="opening__curtain opening__curtain--bottom" aria-hidden="true" />
+      <div
+        className="opening__curtain opening__curtain--top"
+        style={{ backgroundColor: "#fafaf8" }}
+        aria-hidden="true"
+      />
+      <div
+        className="opening__curtain opening__curtain--bottom"
+        style={{ backgroundColor: "#fafaf8" }}
+        aria-hidden="true"
+      />
 
       {/* Main Content inside the opening screen */}
       <div className="opening__content absolute inset-0 transition-all duration-500 z-[10]">
