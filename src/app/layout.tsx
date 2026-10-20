@@ -25,6 +25,14 @@ export const metadata: Metadata = {
   title: "Tô Trọng Nhân | Software Engineer / Full-stack",
   description:
     "Portfolio of To Trong Nhan, Software Engineer based in Ho Chi Minh City. Building web and mobile features with React, Next.js, React Native, NestJS and PostgreSQL.",
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    shortcut: "/icon.png",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "Tô Trọng Nhân | Software Engineer / Full-stack",
     description:
