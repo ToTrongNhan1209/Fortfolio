@@ -51,24 +51,48 @@ export default function RootLayout({
       lang="vi"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} antialiased is-opening`}
     >
       <head>
         <style
           dangerouslySetInnerHTML={{
             __html: `
+              html.is-opening {
+                overflow: hidden !important;
+                height: 100vh !important;
+              }
+              html.is-opening body {
+                overflow: hidden !important;
+                height: 100vh !important;
+              }
+              html.is-opening #site-content {
+                opacity: 0 !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+              }
               #opening {
                 position: fixed !important;
                 inset: 0 !important;
                 width: 100vw !important;
                 height: 100vh !important;
-                z-index: 99999 !important;
+                z-index: 999999 !important;
                 background-color: #fafaf8 !important;
                 overflow: hidden !important;
+                display: block !important;
               }
               .opening__curtain {
                 background-color: #fafaf8 !important;
               }
+            `,
+          }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+                window.scrollTo(0, 0);
+              } catch (e) {}
             `,
           }}
         />

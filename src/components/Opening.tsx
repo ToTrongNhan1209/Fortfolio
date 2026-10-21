@@ -43,6 +43,7 @@ export function Opening() {
     setTimeout(() => {
       setIsOpen(false);
       document.documentElement.classList.remove("overflow-hidden");
+      document.documentElement.classList.remove("is-opening");
     }, 850);
   }, []);
 
@@ -55,6 +56,7 @@ export function Opening() {
     setIsStamped(false);
     if (typeof document !== "undefined") {
       document.documentElement.classList.add("overflow-hidden");
+      document.documentElement.classList.add("is-opening");
     }
 
     let currentProgress = 0;
@@ -115,6 +117,7 @@ export function Opening() {
       window.removeEventListener("keydown", handleKeyDown);
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
       document.documentElement.classList.remove("overflow-hidden");
+      document.documentElement.classList.remove("is-opening");
     };
   }, [startOpening, dismiss]);
 

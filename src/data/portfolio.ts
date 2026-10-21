@@ -64,7 +64,7 @@ export const PORTFOLIO_DATA = {
     titleVi: "Kỹ sư Phần mềm / Full-stack",
     locationEn: "Ho Chi Minh City, Vietnam",
     locationVi: "TP. Hồ Chí Minh, Việt Nam",
-    phone: "0866 463 002",
+    phone: "0981 587 469",
     email: "totrongnhan1209@gmail.com",
     github: "https://github.com/ToTrongNhan1209",
     avatar: "/images/avatar-v2.png",

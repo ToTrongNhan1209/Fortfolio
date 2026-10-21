@@ -947,4 +947,46 @@ body {
   100% { transform: translateY(-9px); }
 }
 
+/* =========================================================================
+   STRICT OPENING SCREEN LOCK (Zero FOUC, 100% Guaranteed First View)
+   ========================================================================= */
+
+html.is-opening {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+html.is-opening body {
+  overflow: hidden !important;
+  height: 100vh !important;
+  user-select: none !important;
+}
+
+/* Hide the entire portfolio content completely while opening is active */
+html.is-opening #site-content {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* =========================================================================
+   EDITORIAL SCROLL REVEAL & BLUR-TO-SHARP ANIMATIONS
+   ========================================================================= */
+
+.reveal-blur-item {
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(22px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.reveal-blur-item.is-revealed {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0px);
+}
+
 

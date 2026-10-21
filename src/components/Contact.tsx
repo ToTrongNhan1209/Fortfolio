@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { ScrambleText } from "./ScrambleText";
 import { Mail, Check, Copy, ArrowUpRight, FileText, Send, Phone, MapPin } from "lucide-react";
+import { ScrollReveal } from "./ScrollReveal";
+import { ScrollWipeText } from "./ScrollWipeText";
 
 interface ContactProps {
   lang: "en" | "vi";
@@ -38,22 +40,28 @@ export function Contact({ lang, onOpenCv }: ContactProps) {
     <section id="contact" className="py-16 sm:py-24 hairline-b">
       <div className="flex flex-col gap-10">
         {/* Section Header */}
-        <div>
+        <ScrollReveal>
           <span className="text-xs font-mono uppercase tracking-[0.16em] text-[#6b675f] mb-3 block">
             {isEn ? "[ Contact ]" : "[ Liên hệ ]"}
           </span>
           <h2 className="font-name text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#111111] mb-4">
             <ScrambleText text={isEn ? "Want to get in touch?" : "Kết nối & Trao đổi."} />
           </h2>
-          <p className="text-[16px] text-[#33332f] leading-relaxed max-w-2xl">
-            {isEn
-              ? "I'm open to Software Engineer opportunities where I can keep working across frontend and backend, learn from a team and take responsibility for real features. If you think we could work together, feel free to reach out."
-              : "Mình luôn sẵn sàng đón nhận cơ hội Kỹ sư Phần mềm để tiếp tục làm việc xuyên suốt giữa frontend và backend, học hỏi cùng đội ngũ và chịu trách nhiệm cho các tính năng thực tế. Đừng ngần ngại kết nối cùng mình."}
-          </p>
-        </div>
+          <div className="max-w-2xl">
+            <ScrollWipeText
+              text={
+                isEn
+                  ? "I'm open to Software Engineer opportunities where I can keep working across frontend and backend, learn from a team and take responsibility for real features. If you think we could work together, feel free to reach out."
+                  : "Mình luôn sẵn sàng đón nhận cơ hội Kỹ sư Phần mềm để tiếp tục làm việc xuyên suốt giữa frontend và backend, học hỏi cùng đội ngũ và chịu trách nhiệm cho các tính năng thực tế. Đừng ngần ngại kết nối cùng mình."
+              }
+              accentWords={["Software", "Engineer", "frontend", "backend", "team", "Kỹ", "sư", "Phần", "mềm"]}
+              className="text-[16px] text-[#33332f] leading-relaxed"
+            />
+          </div>
+        </ScrollReveal>
 
         {/* Massive Signature Clickable Email Link matching voanhphi */}
-        <div className="py-2">
+        <ScrollReveal delay={120} className="py-2">
           <a
             href={`mailto:${profile.email}`}
             data-cursor="true"
@@ -63,12 +71,12 @@ export function Contact({ lang, onOpenCv }: ContactProps) {
             <span>{profile.email}</span>
             <ArrowUpRight className="w-6 h-6 sm:w-8 sm:h-8 text-[#b42318] shrink-0 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
           </a>
-        </div>
+        </ScrollReveal>
 
         {/* Contact Details & Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-[#eae7e1]">
           {/* Left: Direct Channels List */}
-          <div className="flex flex-col gap-4">
+          <ScrollReveal delay={150} className="flex flex-col gap-4">
             <div className="text-xs font-mono uppercase tracking-wider text-[#6b675f]">
               {isEn ? "Direct channels" : "Kênh liên lạc trực tiếp"}
             </div>
@@ -143,10 +151,10 @@ export function Contact({ lang, onOpenCv }: ContactProps) {
                 {profile.phone}
               </span>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right: Quick Note Box + Sign-off */}
-          <div className="flex flex-col justify-between">
+          <ScrollReveal delay={220} className="flex flex-col justify-between">
             <div className="p-5 sm:p-6 rounded-2xl bg-[#f2f0ec] border border-[#eae7e1]">
               <h3 className="text-xs font-mono uppercase tracking-wider text-[#6b675f] mb-3">
                 {isEn ? "Send a quick note" : "Gửi tin nhắn nhanh"}
@@ -201,7 +209,7 @@ export function Contact({ lang, onOpenCv }: ContactProps) {
                 {isEn ? "Thanks for taking a look around." : "Cảm ơn bạn đã ghé thăm trang cá nhân của mình."}
               </p>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

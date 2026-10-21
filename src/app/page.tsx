@@ -23,63 +23,67 @@ export default function Home() {
     <div className="min-h-screen bg-[#fafaf8] text-[#111111] selection:bg-[#b42318] selection:text-white paper-field-bg relative">
       {/* Intro Opening Animation (Paper plane folding & rising sky) matching voanhphi */}
       <Opening />
-      {/* SVG Ink Wobble Filter matching voanhphi */}
-      <svg aria-hidden="true" focusable="false" width="0" height="0" style={{ position: "absolute" }}>
-        <defs>
-          <filter id="ink-wobble" x="-15%" y="-15%" width="130%" height="130%" colorInterpolationFilters="sRGB">
-            <feTurbulence type="fractalNoise" baseFrequency="0.11" numOctaves={1} seed={7} result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale={1.4} xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-      </svg>
 
-      {/* Floating Vietnamese Street Food Bleed Stickers along Left and Right margins */}
-      <BleedStickers />
+      {/* Guaranteed Locked Site Content (Hidden 100% while Opening is Active) */}
+      <div id="site-content" className="relative transition-opacity duration-700">
+        {/* SVG Ink Wobble Filter matching voanhphi */}
+        <svg aria-hidden="true" focusable="false" width="0" height="0" style={{ position: "absolute" }}>
+          <defs>
+            <filter id="ink-wobble" x="-15%" y="-15%" width="130%" height="130%" colorInterpolationFilters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency="0.11" numOctaves={1} seed={7} result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale={1.4} xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </defs>
+        </svg>
 
-      {/* Top Floating Glass Navigation */}
-      <Navbar
-        lang={lang}
-        setLang={setLang}
-        onOpenCv={() => setIsCvOpen(true)}
-      />
+        {/* Floating Vietnamese Street Food Bleed Stickers along Left and Right margins */}
+        <BleedStickers />
 
-      {/* Main Content Container (Constrained & Centered like voanhphi.vercel.app) */}
-      <main className="max-w-4xl mx-auto px-5 sm:px-6">
-        <Hero
+        {/* Top Floating Glass Navigation */}
+        <Navbar
           lang={lang}
+          setLang={setLang}
           onOpenCv={() => setIsCvOpen(true)}
         />
 
-        <Manifesto lang={lang} />
+        {/* Main Content Container (Constrained & Centered like voanhphi.vercel.app) */}
+        <main className="max-w-4xl mx-auto px-5 sm:px-6">
+          <Hero
+            lang={lang}
+            onOpenCv={() => setIsCvOpen(true)}
+          />
 
-        <Stack lang={lang} />
+          <Manifesto lang={lang} />
 
-        <Projects
+          <Stack lang={lang} />
+
+          <Projects
+            lang={lang}
+            onSelectProject={(project) => setSelectedProject(project)}
+          />
+
+          <Contact
+            lang={lang}
+            onOpenCv={() => setIsCvOpen(true)}
+          />
+
+          <Footer lang={lang} />
+        </main>
+
+        {/* CV Dossier Modal */}
+        <CvModal
+          isOpen={isCvOpen}
+          onClose={() => setIsCvOpen(false)}
           lang={lang}
-          onSelectProject={(project) => setSelectedProject(project)}
         />
 
-        <Contact
+        {/* Project Deep-dive Modal */}
+        <ProjectModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
           lang={lang}
-          onOpenCv={() => setIsCvOpen(true)}
         />
-
-        <Footer lang={lang} />
-      </main>
-
-      {/* CV Dossier Modal */}
-      <CvModal
-        isOpen={isCvOpen}
-        onClose={() => setIsCvOpen(false)}
-        lang={lang}
-      />
-
-      {/* Project Deep-dive Modal */}
-      <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-        lang={lang}
-      />
+      </div>
     </div>
   );
 }

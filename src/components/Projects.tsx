@@ -5,6 +5,8 @@ import Image from "next/image";
 import { PORTFOLIO_DATA, ProjectItem } from "@/data/portfolio";
 import { ScrambleText } from "./ScrambleText";
 import { ArrowUpRight, BookOpen } from "lucide-react";
+import { ScrollReveal } from "./ScrollReveal";
+import { ScrollWipeText } from "./ScrollWipeText";
 
 interface ProjectsProps {
   lang: "en" | "vi";
@@ -19,7 +21,7 @@ export function Projects({ lang, onSelectProject }: ProjectsProps) {
     <section id="work" className="py-16 sm:py-20 hairline-b">
       <div className="flex flex-col gap-12">
         {/* Section Header */}
-        <div>
+        <ScrollReveal>
           <span className="text-xs font-mono uppercase tracking-wider text-[#6b675f] mb-1 block">
             {isEn ? "Selected work" : "Dự án tiêu biểu"}
           </span>
@@ -31,13 +33,14 @@ export function Projects({ lang, onSelectProject }: ProjectsProps) {
               ? "Screenshots are of the running products, taken from the live sites."
               : "Hình ảnh giao diện từ các hệ thống đang hoạt động thực tế."}
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Project Cards List */}
         <div className="flex flex-col gap-20">
-          {projects.map((project) => (
-            <div
+          {projects.map((project, pIdx) => (
+            <ScrollReveal
               key={project.id}
+              delay={pIdx * 80}
               className="flex flex-col gap-4 group"
             >
               {/* Category & Year */}
@@ -80,10 +83,13 @@ export function Projects({ lang, onSelectProject }: ProjectsProps) {
                 </div>
               </div>
 
-              {/* Description */}
-              <p className="text-[15px] text-[#33332f] leading-relaxed max-w-2xl mt-1">
-                {isEn ? project.descriptionEn : project.descriptionVi}
-              </p>
+              {/* Description with Scroll-driven inking */}
+              <div className="max-w-2xl mt-1">
+                <ScrollWipeText
+                  text={isEn ? project.descriptionEn : project.descriptionVi}
+                  className="text-[15px] text-[#33332f] leading-relaxed"
+                />
+              </div>
 
               {/* Stats Row */}
               <div className="flex items-center gap-6 py-2.5 border-y border-[#eae7e1] my-1 flex-wrap">
@@ -138,7 +144,7 @@ export function Projects({ lang, onSelectProject }: ProjectsProps) {
                   </a>
                 )}
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

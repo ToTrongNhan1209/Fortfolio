@@ -4,6 +4,8 @@ import React from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { ScrambleText } from "./ScrambleText";
 import { HeroFlipCard } from "./HeroFlipCard";
+import { ScrollWipeText } from "./ScrollWipeText";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface HeroProps {
   lang: "en" | "vi";
@@ -54,18 +56,22 @@ export function Hero({ lang, onOpenCv }: HeroProps) {
             </p>
           </div>
 
-          {/* Narrative Paragraphs */}
+          {/* Narrative Paragraphs with Scroll-driven Inking */}
           <div className="flex flex-col gap-4 text-[15px] sm:text-[16px] text-[#33332f] leading-relaxed max-w-[48ch]">
-            <p className="font-normal text-[#222220]">
-              {isEn ? profile.greetingEn : profile.greetingVi}
-            </p>
-            <p className="text-[#4e4b45] leading-relaxed">
-              {isEn ? profile.bioEn : profile.bioVi}
-            </p>
+            <ScrollWipeText
+              text={isEn ? profile.greetingEn : profile.greetingVi}
+              accentWords={["software", "Ho Chi Minh", "Hồ Chí Minh", "frontend", "backend"]}
+              className="font-normal text-[#222220]"
+            />
+            <ScrollWipeText
+              text={isEn ? profile.bioEn : profile.bioVi}
+              accentWords={["React", "Next.js", "React Native", "NestJS", "PostgreSQL"]}
+              className="text-[#4e4b45] leading-relaxed"
+            />
           </div>
 
           {/* Action Buttons - Exactly as in Image 1 */}
-          <div className="flex items-center gap-3.5 mt-2 flex-wrap">
+          <ScrollReveal delay={200} className="flex items-center gap-3.5 mt-2 flex-wrap">
             <a
               href="#work"
               data-cursor="true"
@@ -112,11 +118,11 @@ export function Hero({ lang, onOpenCv }: HeroProps) {
               </svg>
               <span>{isEn ? "View CV" : "Xem CV"}</span>
             </button>
-          </div>
+          </ScrollReveal>
         </div>
 
         {/* Right Column: 3D Flip Card with User's Chibi Avatar */}
-        <div className="w-full flex justify-center lg:justify-end">
+        <ScrollReveal delay={150} className="w-full flex justify-center lg:justify-end">
           <HeroFlipCard
             avatar={profile.avatar}
             name={profile.name}
@@ -124,7 +130,7 @@ export function Hero({ lang, onOpenCv }: HeroProps) {
             status={isEn ? "Available for hire" : "Sẵn sàng làm việc"}
             location={isEn ? profile.locationEn : profile.locationVi}
           />
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

@@ -3,6 +3,8 @@
 import React from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { ScrambleText } from "./ScrambleText";
+import { ScrollReveal } from "./ScrollReveal";
+import { ScrollWipeText } from "./ScrollWipeText";
 
 interface StackProps {
   lang: "en" | "vi";
@@ -16,19 +18,23 @@ export function Stack({ lang }: StackProps) {
     <section id="skills" className="py-16 sm:py-20 hairline-b">
       <div className="flex flex-col gap-10">
         {/* Section Header */}
-        <div>
+        <ScrollReveal>
           <span className="text-xs font-mono uppercase tracking-wider text-[#6b675f] mb-1 block">
             {isEn ? "Stack" : "Kỹ năng"}
           </span>
           <h2 className="font-name text-3xl sm:text-4xl font-medium tracking-tight text-[#111111]">
             <ScrambleText text={isEn ? "Tools I work with." : "Các công cụ tôi làm việc."} />
           </h2>
-        </div>
+        </ScrollReveal>
 
         {/* 2-Column Grid matching voanhphi */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
-          {stackGroups.map((group) => (
-            <div key={group.categoryEn} className="flex flex-col gap-3 group">
+          {stackGroups.map((group, gIdx) => (
+            <ScrollReveal
+              key={group.categoryEn}
+              delay={gIdx * 90}
+              className="flex flex-col gap-3 group"
+            >
               <div className="border-b border-[#eae7e1] pb-2">
                 <h3 className="font-name text-xl font-medium text-[#111111] group-hover:text-[#b42318] transition-colors">
                   <ScrambleText text={isEn ? group.categoryEn : group.categoryVi} />
@@ -53,10 +59,11 @@ export function Stack({ lang }: StackProps) {
               </div>
 
               {/* Personal Developer Note */}
-              <p className="text-xs font-mono text-[#6b675f] pt-1.5 italic">
-                {isEn ? group.noteEn : group.noteVi}
-              </p>
-            </div>
+              <ScrollWipeText
+                text={isEn ? group.noteEn : group.noteVi}
+                className="text-xs font-mono text-[#6b675f] pt-1.5 italic"
+              />
+            </ScrollReveal>
           ))}
         </div>
       </div>

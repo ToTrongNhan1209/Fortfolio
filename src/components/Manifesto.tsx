@@ -3,6 +3,8 @@
 import React from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 import { ScrambleText } from "./ScrambleText";
+import { ScrollWipeText } from "./ScrollWipeText";
+import { ScrollReveal } from "./ScrollReveal";
 
 interface ManifestoProps {
   lang: "en" | "vi";
@@ -16,7 +18,7 @@ export function Manifesto({ lang }: ManifestoProps) {
     <section id="manifesto" className="py-16 sm:py-20 hairline-b">
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] gap-12 lg:gap-20">
         {/* Left Column */}
-        <div className="flex flex-col">
+        <ScrollReveal className="flex flex-col">
           <span className="text-xs font-mono uppercase tracking-wider text-[#6b675f] mb-4 block">
             {isEn ? "How I work" : "Cách tôi làm việc"}
           </span>
@@ -28,13 +30,17 @@ export function Manifesto({ lang }: ManifestoProps) {
             </span>
           </h2>
 
-          <div className="text-[16px] text-[#33332f] leading-relaxed max-w-[46ch] space-y-4">
-            <p>{isEn ? manifesto.introEn : manifesto.introVi}</p>
+          <div className="max-w-[46ch]">
+            <ScrollWipeText
+              text={isEn ? manifesto.introEn : manifesto.introVi}
+              accentWords={["feature", "database", "flow", "UI", "tính", "năng", "luồng", "giao", "diện"]}
+              className="text-[16px] text-[#33332f] leading-relaxed"
+            />
           </div>
-        </div>
+        </ScrollReveal>
 
         {/* Right Column: 6-Step Pipeline List & Aside */}
-        <div className="flex flex-col lg:pt-8">
+        <ScrollReveal delay={120} className="flex flex-col lg:pt-8">
           <div className="flex items-center gap-3 mb-6">
             <span className="w-8 h-8 rounded-xl bg-[#b42318]/10 text-[#b42318] inline-flex items-center justify-center font-mono text-xs font-bold">
               ✦
@@ -45,9 +51,11 @@ export function Manifesto({ lang }: ManifestoProps) {
           </div>
 
           <ol className="border-t border-[#eae7e1]">
-            {manifesto.steps.map((step) => (
-              <li
+            {manifesto.steps.map((step, sIdx) => (
+              <ScrollReveal
+                as="li"
                 key={step.num}
+                delay={140 + sIdx * 60}
                 className="flex items-baseline gap-4 border-b border-[#eae7e1] py-3.5 group hover:bg-[#f2f0ec]/40 transition-colors px-2 rounded"
               >
                 <span className="text-xs font-mono text-[#6b675f] w-6 shrink-0 tabular-nums">
@@ -56,21 +64,24 @@ export function Manifesto({ lang }: ManifestoProps) {
                 <span className="flex-1 text-sm font-medium text-[#111111] group-hover:text-[#b42318] transition-colors">
                   <ScrambleText text={isEn ? step.titleEn : step.titleVi} />
                 </span>
-              </li>
+              </ScrollReveal>
             ))}
           </ol>
 
-          <aside className="mt-5 text-sm font-serif italic text-[#6b675f] rotate-[1.5deg] pl-2">
-            &ldquo;{isEn ? "I usually find the edge cases while testing the flow." : "Mình thường tìm ra các lỗi biên khi trực tiếp kiểm thử luồng."}&rdquo;
-          </aside>
-        </div>
+          <ScrollReveal delay={540}>
+            <aside className="mt-5 text-sm font-serif italic text-[#6b675f] rotate-[1.5deg] pl-2">
+              &ldquo;{isEn ? "I usually find the edge cases while testing the flow." : "Mình thường tìm ra các lỗi biên khi trực tiếp kiểm thử luồng."}&rdquo;
+            </aside>
+          </ScrollReveal>
+        </ScrollReveal>
       </div>
 
       {/* 3 Core Philosophical Insights */}
       <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
         {manifesto.principles.map((p, idx) => (
-          <div
+          <ScrollReveal
             key={idx}
+            delay={idx * 140}
             className="border-t border-[#eae7e1] pt-5 flex flex-col justify-between group"
           >
             <div>
@@ -89,7 +100,7 @@ export function Manifesto({ lang }: ManifestoProps) {
             <div className="text-[12px] font-mono text-[#b42318] pt-2 border-t border-[#eae7e1]/60">
               {isEn ? p.takeawayEn : p.takeawayVi}
             </div>
-          </div>
+          </ScrollReveal>
         ))}
       </div>
     </section>
